@@ -75,8 +75,9 @@ def added_item_lines(base_sha: str) -> list[tuple[str, str]]:
 def extract_body_sections(body: str) -> dict[str, str]:
     sections: dict[str, str] = {}
     for heading in REQUIRED_BODY_SECTIONS:
+        # Some clients send the pull request body with CRLF line endings.
         pattern = re.compile(
-            rf"(?ms)^## {re.escape(heading)}\n+(.*?)(?=^## |\Z)"
+            rf"(?ms)^## {re.escape(heading)}\r?\n+(.*?)(?=^## |\Z)"
         )
         match = pattern.search(body)
         if match:
